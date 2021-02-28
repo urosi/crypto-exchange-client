@@ -1,7 +1,7 @@
 import { ChartDepthComponent } from './chart-depth/chart-depth.component';
 import { OrderBook } from './interfaces/order-book.interface';
 import { SignalrService } from './services/signalr.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +9,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  bids = [];
-  asks = [];
-
-  @ViewChild(ChartDepthComponent) chartDepthComponent: ChartDepthComponent;
-
   orderBook: OrderBook;
+
+  private chartDepthComponent: ChartDepthComponent;
+
+  @ViewChild('chartDepth') set content(content: ChartDepthComponent) {
+      if (content) {
+          this.chartDepthComponent = content;
+      }
+  }
 
   constructor(
     public signalRService: SignalrService
-  ) {
-    console.log('app.component', this.bids, this.asks);
-  }
+  ) { }
 
   ngOnInit(): void {
     this.signalRService.startConnection();
@@ -28,7 +29,8 @@ export class AppComponent implements OnInit {
 
     this.signalRService.orderBookUpdated.subscribe(
       data => {
-        this.chartDepthComponent.updateChartData(data.lastPrice, data.bids, data.asks);
+        this.orderBook = data;
+        this.chartDepthComponent?.updateChartData(data.bids, data.asks);
       });
   }
 }

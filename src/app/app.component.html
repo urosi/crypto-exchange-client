@@ -1,2 +1,8 @@
-<h2>Bitcoin Market Depth (EUR)</h2>
-<app-chart-depth #chartDepth [bids]="bids" [asks]="asks"></app-chart-depth>
+<div *ngIf="!orderBook">
+  <h2>Loading...</h2>
+</div>
+<div *ngIf="orderBook">
+  <h2>Market Depth for {{ orderBook.tickerDisplay }}</h2>
+  <app-chart-depth #chartDepth ></app-chart-depth>
+</div>
+

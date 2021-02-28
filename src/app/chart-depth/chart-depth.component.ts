@@ -6,17 +6,14 @@ import * as Highcharts from 'highcharts';
   selector: 'app-chart-depth',
   templateUrl: './chart-depth.component.html'
 })
-export class ChartDepthComponent{
-  @Input() bids: any;
-  @Input() asks: any;
-
+export class ChartDepthComponent {
   HighCharts = Highcharts;
 
   isLoading = true;
   updateChart = false;
   chartOptions = depthOptions;
 
-  updateChartData(lastPrice: number, bids: any, asks: any): any {
+  updateChartData(bids: any, asks: any): void {
     this.chartOptions.series[0].data = bids;
     this.chartOptions.series[1].data = asks;
     this.updateChart = true;
