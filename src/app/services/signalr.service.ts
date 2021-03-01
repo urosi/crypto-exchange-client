@@ -1,6 +1,7 @@
 import { OrderBook } from './../interfaces/order-book.interface';
 import { EventEmitter, Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class SignalrService {
 
   startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-                            .withUrl('https://localhost:5001/orderbookhub')
+                            .withUrl(environment.hubConnectionUrl)
                             .build();
     this.hubConnection
       .start()
